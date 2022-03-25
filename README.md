@@ -8,3 +8,7 @@
 2. github actions
 3. k8s
 4. docker
+5. jenkins
+6. argoCD(TODO)
+7. circleCI(TODO)
+8. aws ECR(TODO)
