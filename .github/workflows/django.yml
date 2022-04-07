@@ -35,4 +35,4 @@ jobs:
         echo "$GITHUB_REPOSITORY"
 
     - name: echo shy var
-      run : echo "SHY_VARIABLE"
+      run : echo "${{ secrets.TEST_SECRET }}"
