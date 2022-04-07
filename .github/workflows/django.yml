@@ -29,3 +29,6 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
+    - name: Print some infos
+      run: |
+        echo "${{ github.event.push.head.repo.full_name }}"
