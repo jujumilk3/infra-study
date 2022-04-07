@@ -14,9 +14,9 @@ jobs:
         run: echo "Hello World"
              echo "${{ github.repository }}"
 
-      - name: Extract repository name
-        run: |
-        echo "REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
+#      - name: Extract repository name
+#        run: |
+#        echo "REPO=$GITHUB_REPOSITORY" >> $GITHUB_ENV
 
       - name: repository checkout
         uses: actions/checkout@v2
