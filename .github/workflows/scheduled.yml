@@ -12,6 +12,7 @@ jobs:
     steps:
       - name: Hello World
         run: echo "Hello World"
+             echo "${{ github.repository }}"
 
       - name: Extract repository name
         run: |
@@ -20,7 +21,7 @@ jobs:
       - name: repository checkout
         uses: actions/checkout@v2
         with:
-          repository: ${{ env.REPO }}
+          repository: ${{ github.repository }}
           token: ${{ secrets.MY_GITHUB_TOKEN }}
           path: infra-study
 
