@@ -29,7 +29,10 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
+
     - name: Print repository name
       run: |
         echo "$GITHUB_REPOSITORY"
-        
+
+    - name: echo shy var
+      run : echo "SHY_VARIABLE"
