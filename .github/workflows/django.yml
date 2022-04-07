@@ -32,3 +32,5 @@ jobs:
     - name: Print some infos
       run: |
         echo "${{ github.event.push.head.repo.full_name }}"
+        echo "${{ GITHUB_REPOSITORY }}"
+        
