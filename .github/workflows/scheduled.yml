@@ -13,10 +13,14 @@ jobs:
       - name: Hello World
         run: echo "Hello World"
 
+      - name: Extract repository name
+        run: |
+        echo "REPO=$GITHUB_REPOSITORY" >>$GITHUB_ENV
+
       - name: repository checkout
         uses: actions/checkout@v2
         with:
-          repository: $GITHUB_REPOSITORY
+          repository: ${{ env.REPO }}
           token: ${{ secrets.MY_GITHUB_TOKEN }}
           path: infra-study
 
