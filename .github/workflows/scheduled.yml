@@ -1,8 +1,6 @@
 name: Scheduled Jobs
 
 on:
-  push:
-    branches: [ main ]
   schedule:
     - cron: '0 * * * *'
 
