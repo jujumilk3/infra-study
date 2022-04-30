@@ -1,0 +1,24 @@
+name: Check ENV
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check runner
+      run: whoami
+
+    - name: Check pwd
+      run: pwd
+
+    - name: Check ifconfig
+      run: ifconfig
+
+    - name: Check ENV
+      run: env
+
+    - name: Check pocesses
+      run: ps -ef
