@@ -8,6 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+#    - name: Check ip
+#      run: curl -X GET 180.229.80.50:8000/api/check-ip
+
     - name: Check runner
       run: whoami
 
