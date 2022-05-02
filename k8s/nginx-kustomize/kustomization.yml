@@ -1,0 +1,11 @@
+resources:
+- deployment.yml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: gyu-nginx
+  newName: nginx
+  newTag: 1.14.2
+
+# kustomize는 파일 수정의 기능만 있지 바로 k8s cluster의 deployment에 반영되는 건 아님.
+# 따라서 k apply -f ~를 따로 해줘야 함.

@@ -1,12 +1,15 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: nginx-deployment
+  name: nginx-deployment-statefulset
 spec:
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  serviceName: nginx-statefulset-servicename
   selector:
     matchLabels:
       app: nginx
-  replicas: 2 # tells deployment to run 2 pods matching the template
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -18,6 +21,4 @@ spec:
         ports:
         - containerPort: 80
 
-# k apply -f ./k8s/nginx/deployment.yaml
-# or
-# k apply -f ./k8s/nginx
+# k apply -f ./k8s/nginx-statefulset

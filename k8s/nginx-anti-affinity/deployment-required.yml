@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-anti-affinity-required
+  labels:
+    app: antiaffinity-nginx
+spec:
+  serviceName: nginx-service
+  replicas: 2
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx-anti-affinity-required
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nginx-anti-affinity-required
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - antiaffinity-nginx
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: hello-anti-affinity
+          image: nginx
+          ports:
+            - containerPort: 80
+
+# k apply -f ./k8s/nginx-anti-affinity/deployment-required.yml
