@@ -1,29 +1,29 @@
-name: Scheduled Jobs
-
-on:
-  schedule:
-    - cron: '0 0 * * *'
-
-jobs:
-  test_schedule:
-    runs-on: ubuntu-latest
-    steps:
-      - name: echo repository name
-        run: echo "${{ github.repository }}"
-
-      - name: repository checkout
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ github.repository }}
-          token: ${{ secrets.MY_GITHUB_TOKEN }}
-          path: infra-study
-
-      - name: Add date and push
-        run: |
-          cd infra-study
-          date >> date.txt
-          git add .
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "github-actions"
-          git commit -am "Inject Date"
-          git push
+#name: Scheduled Jobs
+#
+#on:
+#  schedule:
+#    - cron: '0 0 * * *'
+#
+#jobs:
+#  test_schedule:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: echo repository name
+#        run: echo "${{ github.repository }}"
+#
+#      - name: repository checkout
+#        uses: actions/checkout@v2
+#        with:
+#          repository: ${{ github.repository }}
+#          token: ${{ secrets.MY_GITHUB_TOKEN }}
+#          path: infra-study
+#
+#      - name: Add date and push
+#        run: |
+#          cd infra-study
+#          date >> date.txt
+#          git add .
+#          git config --global user.email "github-actions@github.com"
+#          git config --global user.name "github-actions"
+#          git commit -am "Inject Date"
+#          git push
