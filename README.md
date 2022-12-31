@@ -35,5 +35,5 @@
 6. argoCD(TODO)
 7. circleCI(TODO)
 8. aws
-   1. ec2(TODO) 
+   1. ec2(TODO)
    2. ecr(TODO)
