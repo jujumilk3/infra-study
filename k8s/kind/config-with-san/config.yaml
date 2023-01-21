@@ -1,0 +1,31 @@
+# 출처: https://github.com/nicholasdille/k8s-templates/issues/23
+
+
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: kind-test
+nodes:
+  - role: control-plane
+    kubeadmConfigPatches:
+      - |
+        kind: ClusterConfiguration
+        apiServer:
+          certSANs:
+          - {Machine IP}
+networking:
+  # WARNING: It is _strongly_ recommended that you keep this the default
+  # (127.0.0.1) for security reasons. However it is possible to change this.
+  apiServerAddress: "0.0.0.0"
+  # By default the API server listens on a random open port.
+  # You may choose a specific port but probably don't need to in most cases.
+  # Using a random port makes it easier to spin up multiple clusters.
+  apiServerPort: 9193
+
+# san설정이 필요한 이유
+# 그냥 클러스터를 만드는 명령어인 kind create cluster --name clustername 으로 생성하면
+# apiServerAddress가 localhost인 127.0.0.1 + random port로 지정되어 외부에서 연결이 안 됨.
+# 그렇다고 0.0.0.0으로만 설정해도 안되는 이유가 있는데
+# kind create cluster 명령어로 만든 cluster의 config에는 클러스터 api의 ip에 한 certification이 돼있는 것인데
+# 기본값 0.0.0.0으로 만들었으니 0.0.0.0에 대한 ip로 돼있는 것이고,
+# 실제 머신의 public ip는 달라서 내려받은 .kube/config에서 cluster의 server주소를
+# 실제 머신의 ip로 접근하려 하면 해당 주소에 대한 인증이 없기 때문에 접근이 안되는 것임.
