@@ -1,0 +1,10 @@
+{
+    "folders": [
+        {
+            "path": ".",
+        },
+        {
+            "path": "mcp-server-test/sample-mcp-server",
+        }
+    ]
+}
