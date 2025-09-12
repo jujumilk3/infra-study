@@ -48,32 +48,58 @@ def main(
 
     @app.call_tool()
     async def call_tool(name: str, arguments: dict[str, Any]) -> list[types.ContentBlock]:
-        ctx = app.request_context
-        interval = arguments.get("interval", 1.0)
-        count = arguments.get("count", 5)
-        caller = arguments.get("caller", "unknown")
+        if name == "add":
+            a = arguments.get("a")
+            b = arguments.get("b")
+            result = a + b
+            return [types.TextContent(type="text", text=f"Result: {a} + {b} = {result}")]
+        elif name == "start-notification-stream":
+            ctx = app.request_context
+            interval = arguments.get("interval", 1.0)
+            count = arguments.get("count", 5)
+            caller = arguments.get("caller", "unknown")
 
-        # Send the specified number of notifications with the given interval
-        for i in range(count):
-            await ctx.session.send_log_message(
-                level="info",
-                data=f"Notification {i + 1}/{count} from caller: {caller}",
-                logger="notification_stream",
-                related_request_id=ctx.request_id,
-            )
-            if i < count - 1:  # Don't wait after the last notification
-                await anyio.sleep(interval)
+            # Send the specified number of notifications with the given interval
+            for i in range(count):
+                await ctx.session.send_log_message(
+                    level="info",
+                    data=f"Notification {i + 1}/{count} from caller: {caller}",
+                    logger="notification_stream",
+                    related_request_id=ctx.request_id,
+                )
+                if i < count - 1:  # Don't wait after the last notification
+                    await anyio.sleep(interval)
 
-        return [
-            types.TextContent(
-                type="text",
-                text=(f"Sent {count} notifications with {interval}s interval for caller: {caller}"),
-            )
-        ]
+            return [
+                types.TextContent(
+                    type="text",
+                    text=(f"Sent {count} notifications with {interval}s interval for caller: {caller}"),
+                )
+            ]
+        else:
+            return [types.TextContent(type="text", text=f"Unknown tool: {name}")]
 
     @app.list_tools()
     async def list_tools() -> list[types.Tool]:
         return [
+            types.Tool(
+                name="add",
+                description="Adds two numbers together",
+                inputSchema={
+                    "type": "object",
+                    "required": ["a", "b"],
+                    "properties": {
+                        "a": {
+                            "type": "number",
+                            "description": "First number to add",
+                        },
+                        "b": {
+                            "type": "number",
+                            "description": "Second number to add",
+                        },
+                    },
+                },
+            ),
             types.Tool(
                 name="start-notification-stream",
                 description=("Sends a stream of notifications with configurable count and interval"),
@@ -95,7 +121,7 @@ def main(
                         },
                     },
                 },
-            )
+            ),
         ]
 
     # Create the session manager with true stateless mode
@@ -126,6 +152,7 @@ def main(
             Mount("/mcp", app=handle_streamable_http),
         ],
         lifespan=lifespan,
+        redirect_slashes=False,
     )
 
     # Wrap ASGI application with CORS middleware to expose Mcp-Session-Id header
