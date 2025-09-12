@@ -14,7 +14,8 @@ from mcp.server.lowlevel import Server
 from mcp.server.streamable_http_manager import StreamableHTTPSessionManager
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
-from starlette.routing import Mount
+from starlette.responses import JSONResponse
+from starlette.routing import Mount, Route
 from starlette.types import Receive, Scope, Send
 
 logger = logging.getLogger(__name__)
@@ -135,6 +136,9 @@ def main(
     async def handle_streamable_http(scope: Scope, receive: Receive, send: Send) -> None:
         await session_manager.handle_request(scope, receive, send)
 
+    async def health_check(request):
+        return JSONResponse({"status": "ok"})
+
     @contextlib.asynccontextmanager
     async def lifespan(app: Starlette) -> AsyncIterator[None]:
         """Context manager for session manager."""
@@ -149,10 +153,10 @@ def main(
     starlette_app = Starlette(
         debug=True,
         routes=[
+            Route("/health", endpoint=health_check, methods=["GET"]),
             Mount("/mcp", app=handle_streamable_http),
         ],
         lifespan=lifespan,
-        redirect_slashes=False,
     )
 
     # Wrap ASGI application with CORS middleware to expose Mcp-Session-Id header
@@ -177,7 +181,7 @@ if __name__ == "__main__":
 
 """
 # Using custom port
-uv run ./main.py --port 3000
+uv run ./main.py --port 3000 --json-response
 
 # Custom logging level
 uv run ./main.py --log-level DEBUG

@@ -12,7 +12,7 @@ docker build -t mcp-server:latest .
 docker run -p 8000:8000 -e MCP_SERVER_MODE=streamable-http mcp-server:latest
 ```
 
-## Kind commands
+## Kind & k8s commands
 
 ```bash
 # Create a Kind cluster with the specified configuration
@@ -20,4 +20,7 @@ kind create cluster --config=./kind-export-mapping-cluster-config.yaml --name ki
 
 # Load Docker image into Kind cluster
 kind load docker-image mcp-server:latest --name kind-local
+
+# Apply Kubernetes manifests
+k apply -f ./kubernetes
 ```

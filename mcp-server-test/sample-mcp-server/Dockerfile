@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir uv
 RUN uv pip install --system --no-cache .
 
 # Expose port for HTTP mode
-EXPOSE 8000
+EXPOSE 3000
 
 # Run the MCP server
-CMD ["python", "main.py"]
+CMD ["uv", "run", "./main.py", "--port", "3000"]
