@@ -10,6 +10,7 @@ from typing import Any
 import anyio
 import click
 import mcp.types as types
+from loguru import logger
 from mcp.server.lowlevel import Server
 from mcp.server.streamable_http_manager import StreamableHTTPSessionManager
 from starlette.applications import Starlette
@@ -17,8 +18,6 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 from starlette.routing import Mount, Route
 from starlette.types import Receive, Scope, Send
-
-logger = logging.getLogger(__name__)
 
 
 @click.command()
@@ -50,6 +49,7 @@ def main(
     @app.call_tool()
     async def call_tool(name: str, arguments: dict[str, Any]) -> list[types.ContentBlock]:
         if name == "add":
+            logger.info(f"Calling add tool with arguments: {arguments}")
             a = arguments.get("a")
             b = arguments.get("b")
             result = a + b
