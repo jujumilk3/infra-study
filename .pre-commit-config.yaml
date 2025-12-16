@@ -8,8 +8,8 @@ repos:
         args: ['--allow-multiple-documents']
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
--   repo: https://github.com/psf/black
-    rev: 25.9.0
+-   repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 25.12.0
     hooks:
     -   id: black
 ci:
